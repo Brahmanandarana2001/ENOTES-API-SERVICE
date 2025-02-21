@@ -16,7 +16,7 @@ import lombok.Setter;
 
 public class Category extends BaseModel{
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)//all are fixed props
 	private Integer id;
 
 	private String name;

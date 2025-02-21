@@ -22,15 +22,34 @@ private ModelMapper mapper;
 	@Override
 	public Boolean saveCategory(CategoryDto categoryDto) {
 		Category category=mapper.map(categoryDto,Category.class);
+		
+		if(ObjectUtils.isEmpty(category.getId())) {
 		category.setIsDelete(false);
 		category.setCreatedBy(1);
 		category.setCreatedOn(new Date());
-		
+		}
+		else
+		{
+			updateCategory(category);
+		}
 		Category saveCategory=categoryRepo.save(category);
 		if(ObjectUtils.isEmpty(saveCategory))
 		return false;
 		else
 			return true;
+	}
+
+	private void updateCategory(Category category) {
+		Optional<Category>findById=categoryRepo.findById(category.getId());
+		if(findById.isPresent()) {
+			Category exitCategory = findById.get();
+			category.setCreatedBy(exitCategory.getCreatedBy());
+			category.setCreatedOn(exitCategory.getCreatedOn());
+			category.setIsDelete(exitCategory.getIsDelete());
+			
+			category.setUpdateBy(152);
+			category.setUpdateOn(new Date());
+		}
 	}
 
 	@Override

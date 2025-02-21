@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryResponse {
+public class CategoryResponse {//all are active props
 	private Integer id;
 
 	private String name;

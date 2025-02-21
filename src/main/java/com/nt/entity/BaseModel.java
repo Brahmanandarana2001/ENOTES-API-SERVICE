@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseModel {
+public class BaseModel {//all are optional props
 	
 	private Boolean isActive;
 	
