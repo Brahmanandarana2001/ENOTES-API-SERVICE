@@ -12,6 +12,7 @@ import org.springframework.util.ObjectUtils;
 import com.nt.dto.CategoryDto;
 import com.nt.dto.CategoryResponse;
 import com.nt.entity.Category;
+import com.nt.exception.ResourceNotfoundException;
 import com.nt.repository.CategoryRepository;
 @Service
 public class CategoryServiceimpl implements CategoryService {
@@ -67,11 +68,13 @@ private ModelMapper mapper;
 	}
 
 	@Override
-	public CategoryDto getCategoryById(Integer id) {
-		Optional<Category>findByCategory=categoryRepo.findByIdAndIsDeleteFalse(id);
-		if(findByCategory.isPresent())
-		{
-			Category category=findByCategory.get();
+	public CategoryDto getCategoryById(Integer id) throws Exception {
+		Category category=categoryRepo.findByIdAndIsDeleteFalse(id)
+				.orElseThrow(()->new ResourceNotfoundException("category not found with this id:"+id));
+		if(!ObjectUtils.isEmpty(category)) {
+			if(category.getName()==null) {
+				throw new IllegalArgumentException("name is null");
+			}
 			return mapper.map(category, CategoryDto.class);
 		}
 		return null;
